@@ -10,5 +10,8 @@ module.exports = {
 		sourceType: 'module',
 	},
 	plugins: ['@typescript-eslint'],
-	rules: {},
+	rules: {
+		'@typescript-eslint/no-extra-semi': 'warn',
+		'@typescript-eslint/no-empty-interface': 'warn',
+	},
 }
