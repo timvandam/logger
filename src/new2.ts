@@ -1,12 +1,10 @@
 import { First } from './First'
 import { SliceFirst } from './SliceFirst'
 
-const message = Symbol('message')
-
 interface Message {}
 
 type LogArgument = string | number | bigint | Record<string, unknown>
-type LogFunction<T extends Record<string, unknown>> = (...args: LogArgument[]) => Message & T
+type LogFunction<T extends Record<string, unknown> = Record<string, unknown>> = (...args: LogArgument[]) => Message & T
 
 type BaseLogMessage = { message: string } & Record<string, unknown>
 const baseLog: LogFunction<BaseLogMessage> = (...args: LogArgument[]): Message & BaseLogMessage => {
@@ -50,17 +48,22 @@ const pidLog: LogFunction<PidLogMessage> = (): Message & PidLogMessage => ({
 
 // This simply exists to provide level type support. Setting the actual type should be done elsewhere
 const levels = ['error', 'warn', 'info', 'http', 'verbose', 'debug', 'silly'] as const
-type LogLevelMessage = { level?: typeof levels[number] }
-const logLevelLog: LogFunction<LogLevelMessage> = () => ({})
-// TODO: Create a wrapper that can create log functions for every type
+type LogLevelMessage = { level: typeof levels[number] }
+const logLevelLog: LogFunction<LogLevelMessage> = () => ({ level: 'info' }) // default level is info
 
-type ExtendedMessage<
-	T extends readonly LogFunction<Record<string, unknown>>[],
-	S extends Message = Message
-> = T extends readonly [] ? S : ExtendedMessage<SliceFirst<T>, S & ReturnType<First<T>>>
+function getLogLevelLoggers(log: LogFunction): Record<typeof levels[number], LogFunction> {
+	const loggers: Record<string, LogFunction> = {}
 
-// TODO: Nice way to do log levels
-function compose<T extends readonly LogFunction<Record<string, unknown>>[]>(...loggers: T) {
+	for (const level of levels) loggers[level] = (...args: LogArgument[]) => ({ ...log(...args), level })
+
+	return loggers
+}
+
+type ExtendedMessage<T extends readonly LogFunction[], S extends Message = Message> = T extends readonly []
+	? S
+	: ExtendedMessage<SliceFirst<T>, S & ReturnType<First<T>>>
+
+function compose<T extends readonly LogFunction[]>(...loggers: T) {
 	return <Z extends readonly LogArgument[]>(...args: Z): ExtendedMessage<T> & CombinedObjects<Z> => {
 		return loggers.reduce((msg, logger) => ({ ...msg, ...logger(...args) }), {}) as ExtendedMessage<T> &
 			CombinedObjects<Z>
@@ -68,6 +71,7 @@ function compose<T extends readonly LogFunction<Record<string, unknown>>[]>(...l
 }
 
 const log = compose(baseLog, timestampLog, pidLog, logLevelLog)
-const l = log('hello', 'world', { a: 'b' }, { b: 'c' })
+const { error, debug, http, info, silly, verbose, warn } = getLogLevelLoggers(log)
+const l = silly('hello', 'world', { a: 'b' }, { b: 'c' })
 
 console.log(l)
