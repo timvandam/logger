@@ -13,5 +13,6 @@ module.exports = {
 	rules: {
 		'@typescript-eslint/no-extra-semi': 'warn',
 		'@typescript-eslint/no-empty-interface': 'warn',
+		'@typescript-eslint/ban-types': 'warn',
 	},
 }
