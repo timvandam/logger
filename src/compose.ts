@@ -13,11 +13,9 @@ export type CombinedObjects<T extends readonly unknown[], S extends Record<strin
 	? S
 	: CombinedObjects<SliceFirst<T>, First<T> extends Record<string, unknown> ? S & First<T> : S>
 
-export function compose<T extends readonly LogFunction[], P extends Partial<ExtendedMessage<T>>>(
-	loggers: T,
-	override?: P
-) {
-	return <Z extends readonly LogArgument[]>(...args: Z): ExtendedMessage<T> & CombinedObjects<Z> =>
+export function compose<T extends readonly LogFunction[], P extends Record<string, unknown>>(loggers: T, override?: P) {
+	return <Z extends readonly LogArgument[]>(...args: Z) =>
 		loggers.reduce((msg, logger) => ({ ...msg, ...logger(...args), ...override }), {}) as ExtendedMessage<T> &
-			CombinedObjects<Z>
+			CombinedObjects<Z> &
+			P
 }
