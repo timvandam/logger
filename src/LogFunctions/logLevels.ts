@@ -11,6 +11,13 @@ export function createLogLevels<T extends readonly LogFunction[]>(
 		...args: Z
 	) => ExtendedMessage<T> & CombinedObjects<Z> & { level: L }
 } {
-	const x = levels.map((level) => [level, compose(loggers, { level })])
-	return Object.fromEntries(x)
+	return {
+		silly: compose(loggers, { level: 'silly' } as const),
+		info: compose(loggers, { level: 'info' } as const),
+		http: compose(loggers, { level: 'http' } as const),
+		verbose: compose(loggers, { level: 'verbose' } as const),
+		error: compose(loggers, { level: 'error' } as const),
+		warn: compose(loggers, { level: 'warn' } as const),
+		debug: compose(loggers, { level: 'debug' } as const),
+	} as const
 }
