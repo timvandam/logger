@@ -1,6 +1,6 @@
 import { LogArgument, LogFunction } from './LogFunction'
-import { CombinedObjects, compose, ExtendedMessage } from '../compose'
-import { ArrayValues } from '../ArrayValues'
+import { ArrayValues } from '../types/ArrayValues'
+import { CombinedObjects, compose, ExtendedMessage } from './compose'
 
 const levels = ['error', 'warn', 'info', 'http', 'verbose', 'debug', 'silly'] as const
 

@@ -1,9 +1,11 @@
-import { Message } from '../Message'
 import { LogArgument, LogFunction } from './LogFunction'
-import { CombinedObjects } from '../compose'
+import { CombinedObjects } from './compose'
+import { Message } from './Message'
 
 type BaseLogMessage = { message: string }
-export const baseLog: LogFunction<BaseLogMessage> = <Z extends LogArgument[]>(...args: Z): Message & BaseLogMessage => {
+export const baseLog: LogFunction<BaseLogMessage> = <Z extends LogArgument[]>(
+	...args: Z
+): Message & BaseLogMessage & CombinedObjects<Z> => {
 	const msg = { message: '' }
 
 	for (const arg of args) {

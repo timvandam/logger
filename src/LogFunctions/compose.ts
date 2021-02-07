@@ -1,7 +1,7 @@
-import { LogArgument, LogFunction } from './LogFunctions/LogFunction'
 import { Message } from './Message'
-import { SliceFirst } from './SliceFirst'
-import { First } from './First'
+import { LogArgument, LogFunction } from './LogFunction'
+import { SliceFirst } from '../types/SliceFirst'
+import { First } from '../types/First'
 
 export type ExtendedMessage<T extends readonly LogFunction[], S extends Message = Message> = T extends readonly []
 	? S

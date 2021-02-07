@@ -2,7 +2,7 @@ import { baseLog } from './LogFunctions/baseLog'
 import { timestampLog } from './LogFunctions/timestampLog'
 import { pidLog } from './LogFunctions/pidLog'
 import { createLogLevels } from './LogFunctions/logLevels'
-import { compose } from './compose'
+import { compose } from './LogFunctions/compose'
 
 const loggers = [baseLog, timestampLog, pidLog] as const
 const log = compose(loggers)
