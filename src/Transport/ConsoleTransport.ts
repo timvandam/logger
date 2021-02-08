@@ -5,7 +5,7 @@ import { createWriteStream } from 'fs'
 import * as util from 'util'
 import { EOL } from 'os'
 
-export default class ConsoleTransport<T extends Message> implements Transport<T> {
+export default class ConsoleTransport<T extends Message = Record<string, unknown>> implements Transport<T> {
 	protected stdout: Writable = createWriteStream('', { fd: 1 })
 
 	constructor(protected format: (msg: T) => string = (msg: T) => util.format(...Object.values(msg), EOL)) {}

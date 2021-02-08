@@ -8,19 +8,17 @@ import * as util from 'util'
 import { EOL } from 'os'
 
 const loggers = [baseLog, timestampLog, pidLog] as const
-const consoleTransport: TransportForLoggers<typeof loggers> = new ConsoleTransport((msg) =>
+const consoleTransport = new ConsoleTransport((msg) =>
 	util.format('[%s] [%d] %s', msg.timestamp, msg.pid, msg.message, EOL)
 )
 
 const log = compose(loggers, [consoleTransport])
 
-// log('hello world!')
-// log('hello world!')
-// log('hello world!')
+log('hello world!')
+log('hello world!')
+log('hello world!')
 
-// console.log('done')
-
-const consoleTransportLevels: TransportForLoggers<typeof loggers, LevelOverride> = new ConsoleTransport((msg) =>
+const consoleTransportLevels = new ConsoleTransport((msg) =>
 	util.format('[%s] [%d] [%s] %s', msg.timestamp, msg.pid, msg.level, msg.message, EOL)
 )
 

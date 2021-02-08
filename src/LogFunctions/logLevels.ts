@@ -4,12 +4,12 @@ import { compose, TransportForLoggers } from './compose'
 
 const levels = ['error', 'warn', 'info', 'http', 'verbose', 'debug', 'silly'] as const
 
-export type LevelOverride = { level: ArrayValues<typeof levels> }
+export type LevelOverride = { level: ArrayValues<typeof levels> } & Record<string, unknown>
 
 // TODO: Override
-export function createLogLevels<L extends readonly LogFunction[]>(
+export function createLogLevels<O extends LevelOverride, L extends readonly LogFunction[]>(
 	loggers: L,
-	transports: TransportForLoggers<L, LevelOverride>[]
+	transports: TransportForLoggers<L, O>[]
 ): {
 	readonly [L in ArrayValues<typeof levels>]: (...args: LogArgument[]) => void
 } {
