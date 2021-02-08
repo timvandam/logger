@@ -2,23 +2,25 @@ import { Message } from './Message'
 import { LogArgument, LogFunction } from './LogFunction'
 import { SliceFirst } from '../types/SliceFirst'
 import { First } from '../types/First'
+import Transport from '../Transport/Transport'
 
 export type ExtendedMessage<T extends readonly LogFunction[], S extends Message = Message> = T extends readonly []
 	? S
 	: ExtendedMessage<SliceFirst<T>, S & ReturnType<First<T>>>
 
-/*
-// Unfortunately this can not be used due to return type becomes 'any'
-export type CombinedObjects<T extends readonly unknown[], S extends Record<string, unknown> = {}> = T extends readonly [
+export type TransportForLoggers<L extends readonly LogFunction[], O = unknown> = Transport<ExtendedMessage<L> & O>
 
-]
-	? S
-	: CombinedObjects<SliceFirst<T>, First<T> extends Record<string, unknown> ? S & First<T> : S> */
-
-export function compose<T extends readonly LogFunction[], P extends Record<string, unknown> = {}>(
-	loggers: T,
-	override?: P
+export function compose<O extends Record<string, unknown>, L extends readonly LogFunction[]>(
+	loggers: L,
+	transports: TransportForLoggers<L, O>[],
+	override: O = {} as O
 ) {
-	return <Z extends readonly LogArgument[]>(...args: Z) =>
-		loggers.reduce((msg, logger) => ({ ...msg, ...logger(...args), ...override }), {}) as ExtendedMessage<T> & P
+	return (...args: LogArgument[]): void => {
+		const msg = loggers.reduce(
+			(msg, logger) => ({ ...msg, ...logger(...args), ...override }),
+			{}
+		) as ExtendedMessage<L> & O
+
+		transports.forEach((transport) => transport.transport(msg))
+	}
 }

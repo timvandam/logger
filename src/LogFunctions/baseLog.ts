@@ -2,7 +2,7 @@ import { LogArgument, LogFunction } from './LogFunction'
 import { Message } from './Message'
 
 type BaseLogMessage = { message: string }
-export const baseLog: LogFunction<BaseLogMessage> = <Z extends LogArgument[]>(...args: Z): Message & BaseLogMessage => {
+export const baseLog: LogFunction<BaseLogMessage> = (...args: LogArgument[]): Message & BaseLogMessage => {
 	const msg = { message: '' }
 
 	for (const arg of args) {
