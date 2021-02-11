@@ -11,7 +11,7 @@ const loggers = [baseLog, timestampLog, pidLog] as const
 
 const log = compose(loggers, [
 	consoleTransport((msg) => util.format('[%s] [%d] %s', msg.timestamp, msg.pid, msg.message, EOL)),
-	consoleTransport((msg) => util.format(msg.message, msg, EOL)),
+	consoleTransport((msg) => util.format(msg.message, EOL)),
 ])
 
 log('hello world!')
