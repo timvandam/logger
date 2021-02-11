@@ -1,29 +1,25 @@
 import { baseLog } from './LogFunctions/baseLog'
 import { timestampLog } from './LogFunctions/timestampLog'
 import { pidLog } from './LogFunctions/pidLog'
-import { createLogLevels, LevelOverride } from './LogFunctions/logLevels'
-import { compose, TransportForLoggers } from './LogFunctions/compose'
-import ConsoleTransport from './Transport/ConsoleTransport'
+import { compose } from './LogFunctions/compose'
+import { consoleTransport } from './Transport/consoleTransport'
 import * as util from 'util'
 import { EOL } from 'os'
+import { createLogLevels } from './LogFunctions/logLevels'
 
 const loggers = [baseLog, timestampLog, pidLog] as const
-const consoleTransport = new ConsoleTransport((msg) =>
-	util.format('[%s] [%d] %s', msg.timestamp, msg.pid, msg.message, EOL)
-)
 
-const log = compose(loggers, [consoleTransport])
+const log = compose(loggers, [
+	consoleTransport((msg) => util.format('[%s] [%d] %s', msg.timestamp, msg.pid, msg.message, EOL)),
+	consoleTransport((msg) => util.format(msg.message, msg, EOL)),
+])
 
 log('hello world!')
 log('hello world!')
 log('hello world!')
 
-const consoleTransportLevels = new ConsoleTransport((msg) =>
-	util.format('[%s] [%d] [%s] %s', msg.timestamp, msg.pid, msg.level, msg.message, EOL)
-)
+const { silly } = createLogLevels(loggers, [
+	consoleTransport((msg) => util.format('[%s] [%d] [%s] %s', msg.timestamp, msg.pid, msg.level, msg.message, EOL)),
+])
 
-const { silly, info } = createLogLevels(loggers, [consoleTransportLevels])
-
-silly('a', 'b', 'c', { a: 'b' }, 'd', { c: 'd' })
-info('a', 'b', 'c', { a: 'b' }, 'd', { c: 'd' })
-log('a', 'b', 'c', { a: 'b' }, 'd', { c: 'd' })
+silly('hello world!')

@@ -3,23 +3,22 @@ import { ArrayValues } from '../types/ArrayValues'
 import { compose, TransportForLoggers } from './compose'
 
 const levels = ['error', 'warn', 'info', 'http', 'verbose', 'debug', 'silly'] as const
+export type LogLevelMessage = { level: ArrayValues<typeof levels> }
+const logLevelLog = (level: ArrayValues<typeof levels>): LogFunction<LogLevelMessage> => () => ({ level })
 
-export type LevelOverride = { level: ArrayValues<typeof levels> } & Record<string, unknown>
-
-// TODO: Override
-export function createLogLevels<O extends LevelOverride, L extends readonly LogFunction[]>(
+export function createLogLevels<L extends readonly LogFunction[]>(
 	loggers: L,
-	transports: TransportForLoggers<L, O>[]
+	transports: TransportForLoggers<readonly [...L, ReturnType<typeof logLevelLog>]>[]
 ): {
 	readonly [L in ArrayValues<typeof levels>]: (...args: LogArgument[]) => void
 } {
 	return {
-		silly: compose(loggers, transports, { level: 'silly' }),
-		info: compose(loggers, transports, { level: 'info' }),
-		http: compose(loggers, transports, { level: 'http' }),
-		verbose: compose(loggers, transports, { level: 'verbose' }),
-		error: compose(loggers, transports, { level: 'error' }),
-		warn: compose(loggers, transports, { level: 'warn' }),
-		debug: compose(loggers, transports, { level: 'debug' }),
+		silly: compose([...loggers, logLevelLog('silly')], transports),
+		info: compose([...loggers, logLevelLog('info')], transports),
+		http: compose([...loggers, logLevelLog('http')], transports),
+		verbose: compose([...loggers, logLevelLog('verbose')], transports),
+		error: compose([...loggers, logLevelLog('error')], transports),
+		warn: compose([...loggers, logLevelLog('warn')], transports),
+		debug: compose([...loggers, logLevelLog('debug')], transports),
 	} as const
 }
