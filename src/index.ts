@@ -6,15 +6,15 @@ import { consoleTransport } from './Transport/consoleTransport'
 import * as util from 'util'
 import { EOL } from 'os'
 import { createLogLevels } from './LogFunctions/logLevels'
+import { fileTransport } from './Transport/fileTransport'
 
 const loggers = [baseLog, timestampLog, pidLog] as const
 
 const log = compose(loggers, [
+	fileTransport('./log.txt'),
 	consoleTransport((msg) => util.format('[%s] [%d] %s', msg.timestamp, msg.pid, msg.message, EOL)),
-	consoleTransport((msg) => util.format(msg.message, EOL)),
 ])
 
-log('hello world!')
 log('hello world!')
 log('hello world!')
 

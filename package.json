@@ -7,7 +7,7 @@
 	"author": "Tim van Dam <timvandamcs@gmail.com>",
 	"license": "MIT",
 	"scripts": {
-		"dev": "node --unhandled-rejections=strict -r ts-node/register src"
+		"dev": "node --unhandled-rejections=strict -r ts-node/register ."
 	},
 	"devDependencies": {
 		"@types/jest": "^26.0.20",
@@ -20,5 +20,8 @@
 		"ts-jest": "^26.5.0",
 		"ts-node": "^9.1.1",
 		"typescript": "^4.1.3"
+	},
+	"dependencies": {
+		"cycle": "^1.0.3"
 	}
 }

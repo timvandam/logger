@@ -1,0 +1,33 @@
+[Circular] 
+{"message":"hello world!","timestamp":"2021-02-12T18:09:42.396Z","pid":18025} 
+{"message":"hello world!","timestamp":"2021-02-12T18:09:42.396Z","pid":18025} 
+[Circular] 
+{"message":"hello world!","timestamp":"2021-02-12T18:11:16.916Z","pid":18118} 
+{"message":"hello world!","timestamp":"2021-02-12T18:11:16.916Z","pid":18118} 
+{"message":"hello world!","b":{"a":{"b":"Circular!"}},"timestamp":"2021-02-12T18:19:51.424Z","pid":18696}
+{"message":"hello world!","timestamp":"2021-02-12T18:19:51.425Z","pid":18696}
+{"message":"hello world!","timestamp":"2021-02-12T18:19:51.425Z","pid":18696}
+{"message":"hello world!","b":{"a":{"b":"Circular! b"}},"timestamp":"2021-02-12T18:20:05.253Z","pid":18736}
+{"message":"hello world!","timestamp":"2021-02-12T18:20:05.254Z","pid":18736}
+{"message":"hello world!","timestamp":"2021-02-12T18:20:05.254Z","pid":18736}
+{"message":"hello world!","c":{"b":{"a":{"c":"Circular! c"}}},"timestamp":"2021-02-12T18:21:32.316Z","pid":18841}
+{"message":"hello world!","timestamp":"2021-02-12T18:21:32.317Z","pid":18841}
+{"message":"hello world!","timestamp":"2021-02-12T18:21:32.317Z","pid":18841}
+{"message":"hello world!","timestamp":"2021-02-12T18:21:57.349Z","pid":18883}
+{"message":"hello world!","timestamp":"2021-02-12T18:21:57.350Z","pid":18883}
+{"message":"hello world!","timestamp":"2021-02-12T18:21:57.350Z","pid":18883}
+{"message":"hello world!","timestamp":"2021-02-12T18:22:32.460Z","pid":18932}
+{"message":"hello world!","timestamp":"2021-02-12T18:22:32.461Z","pid":18932}
+{"message":"hello world!","timestamp":"2021-02-12T18:22:32.461Z","pid":18932}
+{"message":"hello world!","timestamp":"2021-02-12T18:22:39.817Z","pid":18970}
+{"message":"hello world!","timestamp":"2021-02-12T18:22:39.818Z","pid":18970}
+{"message":"hello world!","timestamp":"2021-02-12T18:22:39.818Z","pid":18970}
+{"message":"hello world!","b":{"a":{"b":"Circular! b"},"c":{"b":"Circular! b"}},"timestamp":"2021-02-12T18:23:03.796Z","pid":19010}
+{"message":"hello world!","timestamp":"2021-02-12T18:23:03.797Z","pid":19010}
+{"message":"hello world!","timestamp":"2021-02-12T18:23:03.797Z","pid":19010}
+{"message":"hello world!","b":{"a":{"b":"Circular! b","a":"Circular! a"},"c":{"b":"Circular! b"}},"a":"Circular! a","timestamp":"2021-02-12T18:23:30.832Z","pid":19056}
+{"message":"hello world!","timestamp":"2021-02-12T18:23:30.833Z","pid":19056}
+{"message":"hello world!","timestamp":"2021-02-12T18:23:30.833Z","pid":19056}
+{"message":"hello world!","b":{"a":{"b":{"$ref":"$[\"b\"]"},"a":{"$ref":"$[\"b\"][\"a\"]"}},"c":{"b":{"$ref":"$[\"b\"]"}}},"a":{"$ref":"$[\"b\"][\"a\"]"},"timestamp":"2021-02-12T18:42:12.919Z","pid":21189}
+{"message":"hello world!","timestamp":"2021-02-12T18:42:12.920Z","pid":21189}
+{"message":"hello world!","timestamp":"2021-02-12T18:42:12.920Z","pid":21189}
